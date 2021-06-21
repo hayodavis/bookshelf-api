@@ -1,1 +1,1 @@
-console.log('Server Berjalan')
+console.log('Server Berjalan');
