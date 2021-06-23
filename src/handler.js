@@ -123,6 +123,26 @@ const editBookByIdHandler = (request, h) => {
 
   const index = books.findIndex((book) => book.id === id);
 
+  // madatory Update Book Without Name
+  if (name === undefined) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // mandatory Update Book With Page Read More Than Page Count
+  if (pageCount < readPage) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+    return response;
+  }
+
   // mandatory update Book With Complete Data
   if (index !== -1) {
     books[index] = {
