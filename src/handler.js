@@ -8,8 +8,8 @@ const addBookHandler = (request, h) => {
 
   const id = nanoid(16);
 
-  const insertAt = new Date().toString();
-  const updateAt = insertAt;
+  const insertedAt = new Date().toString();
+  const updatedAt = insertedAt;
   const finished = pageCount === readPage;
 
   // mandatory Add Book Without Name
@@ -43,8 +43,8 @@ const addBookHandler = (request, h) => {
     readPage,
     finished,
     reading,
-    insertAt,
-    updateAt,
+    insertedAt,
+    updatedAt,
   };
 
   books.push(saveBook);
@@ -90,4 +90,27 @@ const getAllBooksHandler = (request, h) => {
   return response;
 };
 
-module.exports = { addBookHandler, getAllBooksHandler };
+// mandatory Get Detail Book by Id
+const getBookByIdHandler = (request, h) => {
+  const { id } = request.params;
+
+  const book = books.filter((check) => check.id === id)[0];
+
+  if (book !== undefined) {
+    return {
+      status: 'success',
+      data: {
+        book,
+      },
+    };
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
+  });
+  response.code(404);
+  return response;
+};
+
+module.exports = { addBookHandler, getAllBooksHandler, getBookByIdHandler };
