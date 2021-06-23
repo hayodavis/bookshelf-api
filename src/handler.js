@@ -73,7 +73,9 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
-  const getBook = books;
+  let getBook = books;
+
+  const { name, reading, finished } = request.query;
 
   // mandatory Get All Books
   const response = h.response({
@@ -86,6 +88,20 @@ const getAllBooksHandler = (request, h) => {
       })),
     },
   });
+
+  // optional collection
+  if (name !== undefined) {
+    getBook = getBook.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
+  if (reading !== undefined) {
+    getBook = getBook.filter((book) => book.reading === (reading === '1'));
+  }
+
+  if (finished !== undefined) {
+    getBook = getBook.filter((book) => book.finished === (finished === '1'));
+  }
+
   response.code(200);
   return response;
 };
