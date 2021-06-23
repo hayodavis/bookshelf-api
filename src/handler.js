@@ -12,6 +12,26 @@ const addBookHandler = (request, h) => {
   const updateAt = insertAt;
   const finished = pageCount === readPage;
 
+  // mandatory Add Book Without Name
+  if (name === undefined) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+    });
+    response.code(400);
+    return response;
+  }
+
+  // mandatory Add Book with Page Read More Than Page Count
+  if (pageCount < readPage) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+    return response;
+  }
+
   const saveBook = {
     id,
     name,
